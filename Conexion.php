@@ -21,9 +21,9 @@
 		// Recuerda, las variables siempre empiezan con dolar ($).
 		
 		$Servidor = "localhost";
-		$Usuario = "Usuario_Prueba";
-		$Clave = "Clave1";
-		$BaseDatos = "Prueba";
+		$Usuario = "root";
+		$Clave = "root";
+		$BaseDatos = "gpi";
 
 		// Creamos la conexión y almacenamos el handle
 		

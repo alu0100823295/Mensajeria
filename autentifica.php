@@ -19,4 +19,5 @@
 	{
 		header('Location: index.html'); // Si no hay resultad volvemos al login
 	}
-?>		
+?>
+
