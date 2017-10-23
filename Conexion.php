@@ -22,8 +22,8 @@
 		
 		$Servidor = "localhost";
 		$Usuario = "root";
-		$Clave = "root";
-		$BaseDatos = "gpi";
+		$Clave = "";
+		$BaseDatos = "prueba";
 
 		// Creamos la conexión y almacenamos el handle
 		

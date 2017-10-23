@@ -24,10 +24,10 @@
 
         $Conexion = CrearConexion();
 
-        $Accion = $_REQUEST["Accion"];
+        $Accion = $_REQUEST["Accion"];  // Inicialmente no existe.
         $Usuario = $_SESSION["USUARIO_ID"];
         $Nombre = $_SESSION["USUARIO_NOMBRE"];
-        $ID = $_REQUEST["ID"];
+        $ID = $_REQUEST["ID"];          // Inicialmente no existe.
 
         echo "
             <nav class=\"navbar navbar-dark bg-dark\">
@@ -84,7 +84,8 @@
                                 <select name='SDE' class='form-control'>
                                     <option value=\"\"></option>
             ";
-            echo "";
+
+            // Desplegable con nombres de usuarios excepto el propio
             while ($RTemp = mysqli_fetch_array($Resultado))
             {
                 echo ("<option value='". $RTemp["ID"]."'");
@@ -143,15 +144,23 @@
 
             echo "<hr/>";
             echo "<div class='container'>";
+
+            $bg = ["bg-info", "bg-dark"];
+
+            $index = 0;
+
             while ($Tupla = mysqli_fetch_array($Resultado ,MYSQLI_ASSOC))
             {
                 echo "<div class='card text-center'>";
 
 
                 if ($Accion == "Recibidos")
-                    echo "<div class='card-header bg-info'>Mensaje de " . $Tupla["Remitente"] . "</div>";
+                    echo "<div class='card-header ". $bg[$index] ." text-white'>Mensaje de " . $Tupla["Remitente"] . "</div>";
                 else
-                    echo "<div class='card-header bg-info'>Mensaje enviado a " . $Tupla["Destinatario"] . "</div>";
+                    echo "<div class='card-header ". $bg[$index] ." text-white'>Mensaje enviado a " . $Tupla["Destinatario"] . "</div>";
+
+                if($index == 0) $index = 1;
+                else $index = 0;
 
                 echo "<div class=\"card-body\"";
                 echo "<p>" . str_replace("\n", "<br />", $Tupla["Mensaje"]) . "</p>\n";
@@ -163,7 +172,7 @@
                 echo "<button class=\"btn btn-outline-dark\" onclick=\"javascript:Eliminar(".$Tupla["ID"].")\">Eliminar</button>";
                 echo "</div>";
 
-                echo "<div class=\"card-footer bg-dark text-muted\">Recibido el " . DameFecha($Tupla["Fecha"]) . "</div>";
+                echo "<div class=\"card-footer bg-white text-right\">Recibido el " . DameFecha($Tupla["Fecha"]) . "</div>";
                 echo "</div><hr/>";
             }
 

@@ -27,7 +27,7 @@
             <div class=\"container justify-content-center\">
             ";
 
-        $Boton = "Enviar Mensaje";
+        $Boton = "Insertar";
 
         if ($Conexion)
         {
@@ -68,6 +68,7 @@
 				if ($RTemp["ID"] == $Para)  echo (" selected='selected'");
 				echo (">" . $RTemp["Usuario"] . "</option>");
 			}
+
 			echo "
                                 </select>
                             </div>
