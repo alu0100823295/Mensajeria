@@ -9,6 +9,7 @@ Nice and Simple
 */
 
 
+//Funciones usando jQuery para evitar que la página que recargue al mostrar el formulario de login o signup
 function showLogin() {
 
     $("#login-div").removeAttr("hidden");
