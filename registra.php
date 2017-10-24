@@ -28,40 +28,56 @@
         $Usuario = $_REQUEST["Usuario"];
         $Clave = $_REQUEST["Clave"];
         $Correo = $_REQUEST["Correo"];
-        $SQL = " INSERT INTO usuarios (Usuario, Clave, Email) VALUES ( '$Usuario', '$Clave', '$Correo') ";
 
-        if ( $Conexion->query($SQL) === true ) {
+        $emailQuery = "SELECT Email FROM usuarios WHERE Email = '$Correo' LIMIT 1";
+        $Exists_email = mysqli_query($Conexion, $emailQuery);
 
+        if(mysqli_num_rows($Exists_email) == 0) {    // EMAIL NO ASIGNADO
 
-            $SQL = " select ID, Usuario from usuarios where Usuario = '$Usuario' and Clave = '$Clave' ";
+            echo "HOLA";
 
-            $Resultado = mysqli_query($Conexion, $SQL);
-            $Tupla = mysqli_fetch_array($Resultado ,MYSQLI_ASSOC);
-            if ($Tupla["ID"] != "")
-            {
-                session_start();
-                $_SESSION["USUARIO_ID"] = $Tupla["ID"];
-                $_SESSION["USUARIO_NOMBRE"] = $Tupla["Usuario"];
-                header('Location: Lista.php?Tipo=Recibidos'); //Redirigimos al listado
+            $SQL = " INSERT INTO usuarios (Usuario, Clave, Email) VALUES ( '$Usuario', '$Clave', '$Correo') ";
+
+            if ($Conexion->query($SQL) === true) {
+
+                $SQL = " select ID, Usuario from usuarios where Usuario = '$Usuario' and Clave = '$Clave' ";
+
+                $Resultado = mysqli_query($Conexion, $SQL);
+                $Tupla = mysqli_fetch_array($Resultado, MYSQLI_ASSOC);
+                if ($Tupla["ID"] != "") {
+                    session_start();
+                    $_SESSION["USUARIO_ID"] = $Tupla["ID"];
+                    $_SESSION["USUARIO_NOMBRE"] = $Tupla["Usuario"];
+                    header('Location: Lista.php?Tipo=Recibidos'); //Redirigimos al listado
+                } else {
+                    header('Location: index.html'); // Si no hay resultado volvemos al login
+                }
+
+            } else {
+                echo "
+                    <div class=\"card text-center\">
+                        <div class=\"card-body\">
+                            <h4 class=\"card-title\">Error al registrar usuario</h4>
+                            <p class=\"card-text\">No se ha podido registar el usuario.</p>
+                            <a href=\"/\" class=\"btn btn-primary\">Página de Inicio</a>
+                        </div>
+                    </div>
+                ";
+
             }
-            else
-            {
-                header('Location: index.html'); // Si no hay resultad volvemos al login
-            }
-
         }
-        else {
+
+          // EMAIL ASIGNADO
+        if(mysqli_num_rows($Exists_email) > 0) {
+
             echo "
-        <div class=\"card text-center\">
-            <div class=\"card-body\">
-                <h4 class=\"card-title\">Error al registrar usuario</h4>
-                <p class=\"card-text\">No se ha podido registar el usuario o el usuario que ha intentado registrar ya exixte.</p>
-                <a href=\"/\" class=\"btn btn-primary\">Página de Inicio</a>
-            </div>
-        </div>
-        ";
+                <div class=\"card text-center\">
+                    <div class=\"card-body\">
+                        <h4 class=\"card-title\">Error al registrar usuario</h4>
+                        <p class=\"card-text\">No se ha podido registar el usuario o el usuario que ha intentado registrar ya existe.</p>
+                        <a href=\"/\" class=\"btn btn-primary\">Página de Inicio</a>
+            ";
         }
-
         ?>
 
     </div>
